@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url 'create_subjappgroup' %}"><button>Добавить запись</button></a>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Предмет</th>
+        <th>Группа</th>
+        <th>Преподаватель</th>
+        <th>Кол-во в неделю</th>
+        <th>Вид занятия</th>
+
+    </tr>
+        {% for subjappgroup in subjappgroups %}
+                <tr>
+                    <td><a href="{{ subjappgroup.get_absolute_url }}">{{ subjappgroup.id }}</a></td>
+                    <td><a href="{{ subjappgroup.subject.get_absolute_url }}">{{ subjappgroup.subject.name }}</a></td>
+                    <td><a href="{{ subjappgroup.group.get_absolute_url }}">{{ subjappgroup.group.number }}</a></td>
+                    <td><a href="{{ subjappgroup.teacher.get_absolute_url }}">{{ subjappgroup.teacher.name }}</a></td>
+                    <td>{{ subjappgroup.per_week }}</td>
+                    <td>{{ subjappgroup.type }}</td>
+                </tr>
+        {% endfor %}
+</table>
+{% endblock %}

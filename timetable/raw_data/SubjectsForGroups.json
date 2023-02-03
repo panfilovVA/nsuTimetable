@@ -1,0 +1,222 @@
+{
+  "1": {
+    "subject": 1,
+    "group": 1,
+    "type": "Seminar"
+  },
+  "2": {
+    "subject": 1,
+    "group": 1,
+    "type": "Lecture"
+  },
+  "3": {
+    "subject": 2,
+    "group": 1,
+    "type": "Lecture"
+  },
+  "4": {
+    "subject": 2,
+    "group": 1,
+    "type": "Seminar"
+  },
+  "5": {
+    "subject": 3,
+    "group": 1,
+    "type": "Lecture"
+  },
+  "6": {
+    "subject": 3,
+    "group": 1,
+    "type": "Seminar"
+  },
+  "7": {
+    "subject": 4,
+    "group": 1,
+    "type": "Lecture"
+  },
+  "8": {
+    "subject": 4,
+    "group": 1,
+    "type": "Seminar"
+  },
+  "9": {
+    "subject": 5,
+    "group": 1,
+    "type": "Seminar"
+  },
+  "10": {
+    "subject": 6,
+    "group": 1,
+    "type": "Seminar"
+  },
+  "11": {
+    "subject": 6,
+    "group": 1,
+    "type": "Lecture"
+  },
+  "12": {
+    "subject": 6,
+    "group": 2,
+    "type": "Seminar"
+  },
+  "13": {
+    "subject": 6,
+    "group": 2,
+    "type": "Lecture"
+  },
+  "14": {
+    "subject": 6,
+    "group": 3,
+    "type": "Seminar"
+  },
+  "15": {
+    "subject": 6,
+    "group": 3,
+    "type": "Lecture"
+  },
+  "16": {
+    "subject": 6,
+    "group": 4,
+    "type": "Seminar"
+  },
+  "17": {
+    "subject": 6,
+    "group": 4,
+    "type": "Lecture"
+  },
+  "18": {
+    "subject": 5,
+    "group": 2,
+    "type": "Seminar"
+  },
+  "19": {
+    "subject": 5,
+    "group": 3,
+    "type": "Seminar"
+  },
+  "20": {
+    "subject": 5,
+    "group": 4,
+    "type": "Seminar"
+  },
+   "21": {
+    "subject": 1,
+    "group": 2,
+    "type": "Seminar"
+  },
+  "22": {
+    "subject": 1,
+    "group": 2,
+    "type": "Lecture"
+  },
+  "23": {
+    "subject": 2,
+    "group": 2,
+    "type": "Lecture"
+  },
+  "24": {
+    "subject": 2,
+    "group": 2,
+    "type": "Seminar"
+  },
+  "25": {
+    "subject": 3,
+    "group": 2,
+    "type": "Lecture"
+  },
+  "26": {
+    "subject": 3,
+    "group": 2,
+    "type": "Seminar"
+  },
+  "27": {
+    "subject": 4,
+    "group": 2,
+    "type": "Lecture"
+  },
+  "28": {
+    "subject": 4,
+    "group": 2,
+    "type": "Seminar"
+  },
+  "29": {
+    "subject": 1,
+    "group": 3,
+    "type": "Seminar"
+  },
+  "30": {
+    "subject": 1,
+    "group": 3,
+    "type": "Lecture"
+  },
+  "31": {
+    "subject": 2,
+    "group": 3,
+    "type": "Lecture"
+  },
+  "32": {
+    "subject": 2,
+    "group": 3,
+    "type": "Seminar"
+  },
+  "33": {
+    "subject": 3,
+    "group": 3,
+    "type": "Lecture"
+  },
+  "34": {
+    "subject": 3,
+    "group": 3,
+    "type": "Seminar"
+  },
+  "35": {
+    "subject": 4,
+    "group": 3,
+    "type": "Lecture"
+  },
+  "36": {
+    "subject": 4,
+    "group": 3,
+    "type": "Seminar"
+  },
+  "37": {
+    "subject": 1,
+    "group": 4,
+    "type": "Seminar"
+  },
+  "38": {
+    "subject": 1,
+    "group": 4,
+    "type": "Lecture"
+  },
+  "39": {
+    "subject": 2,
+    "group": 4,
+    "type": "Lecture"
+  },
+  "40": {
+    "subject": 2,
+    "group": 4,
+    "type": "Seminar"
+  },
+  "41": {
+    "subject": 3,
+    "group": 4,
+    "type": "Lecture"
+  },
+  "42": {
+    "subject": 3,
+    "group": 4,
+    "type": "Seminar"
+  },
+  "43": {
+    "subject": 4,
+    "group": 4,
+    "type": "Lecture"
+  },
+  "44": {
+    "subject": 4,
+    "group": 4,
+    "type": "Seminar"
+  }
+}

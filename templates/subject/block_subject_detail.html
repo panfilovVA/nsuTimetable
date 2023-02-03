@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+<h1>Предмет</h1>
+<p>
+    {{ subject.name }}
+</p>
+<a href="{% url 'edit_subject' pk=subject.id %}"><button>Редактировать предмет</button></a>
+</div>
+{% endblock %}

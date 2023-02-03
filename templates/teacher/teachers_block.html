@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+        <a href="{% url 'create_teacher' %}"><button>Добавить преподавателя</button></a>
+
+<table>
+    <tr>
+        <th>ФИО</th>
+    </tr>
+        {% for teacher in teachers %}
+                <tr>
+                    <td><a href="{{ teacher.get_absolute_url }}">{{ teacher.name }}</a></td>
+                </tr>
+        {% endfor %}
+</table>
+{% endblock %}

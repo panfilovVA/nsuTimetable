@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+        <a href="{% url 'create_group' %}"><button>Добавить группу</button></a>
+
+<table>
+    <tr>
+        <th>Номер</th>
+        <th>Кол-во учеников</th>
+    </tr>
+        {% for group in groups %}
+                <tr>
+                    <td><a href="{{ group.get_absolute_url }}">{{ group.number }}</a></td>
+                    <td>{{ group.size }}</td>
+                </tr>
+        {% endfor %}
+</table>
+{% endblock %}

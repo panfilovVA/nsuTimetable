@@ -1,0 +1,27 @@
+{
+  "1": {
+    "number": "1",
+    "capacity": 12,
+    "appointment": "Seminar"
+  },
+  "2": {
+    "number": "2",
+    "capacity": 20,
+    "appointment": "Seminar"
+  },
+  "3": {
+    "number": "3",
+    "capacity": 20,
+    "appointment": "Seminar"
+  },
+  "4": {
+    "number": "4",
+    "capacity": 20,
+    "appointment": "Laboratory"
+  },
+  "5": {
+    "number": "5",
+    "capacity": 100,
+    "appointment": "Lecture"
+  }
+}

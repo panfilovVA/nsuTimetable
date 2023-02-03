@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+<div style="margin: 2vh">
+    {% block menu %}
+        <a href="{% url 'schedule' %}"><button>Расписание</button></a>
+        <a href="{% url 'groups' %}"><button>Группы</button></a>
+        <a href="{% url 'subjects' %}"><button>Предметы</button></a>
+        <a href="{% url 'teachers' %}"><button>Преподаватели</button></a>
+        <a href="{% url 'rooms' %}"><button>Аудитории</button></a>
+        <a href="{% url 'subjappgroups' %}"><button>Предметы по группам</button></a>
+
+
+    {% endblock %}
+</div>
+
+<div>
+    {% block content %}
+    {% endblock %}
+    {% block schedule %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

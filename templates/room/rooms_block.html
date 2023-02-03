@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url 'create_room' %}"><button>Добавить аудиторию</button></a>
+<table>
+    <tr>
+        <th>Номер</th>
+        <th>Вместимость</th>
+        <th>Назначение</th>
+    </tr>
+        {% for room in rooms %}
+                <tr>
+                    <td><a href="{{ room.get_absolute_url }}">{{ room.number }}</a></td>
+                    <td>{{ room.capacity }}</td>
+                    <td>{{ room.appointment }}</td>
+                </tr>
+        {% endfor %}
+</table>
+{% endblock %}

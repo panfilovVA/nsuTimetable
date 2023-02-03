@@ -1,0 +1,46 @@
+.Lecture{
+    color: lime !important;
+}
+.Seminar,.Terminal{
+    color: cornflowerblue !important;
+}
+table {
+  display: grid;
+}
+
+th,
+td {
+  padding: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: #6c7ae0;
+  text-align: left;
+  font-weight: normal;
+  font-size: 1.1rem;
+  color: white;
+}
+
+th:last-child {
+  border: 0;
+}
+
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #808080;
+}
+
+tr:nth-child(even) td {
+  background: #f8f6ff;
+}
+.group-choose {
+    margin: 2vh;
+}
+.active {
+    background: #6c7ae0;
+}

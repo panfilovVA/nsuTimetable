@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url 'create_subject' %}"><button>Добавить предмет</button></a>
+<table>
+    <tr>
+        <th>Название предмета</th>
+    </tr>
+        {% for subject in subjects %}
+                <tr>
+                    <td><a href="{{ subject.get_absolute_url }}">{{ subject.name }}</a></td>
+                </tr>
+        {% endfor %}
+</table>
+{% endblock %}

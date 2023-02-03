@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+<p>
+    Номер: {{ room.number }}
+</p>
+<p>
+    Вместимость: {{ room.capacity }}
+</p>
+</div>
+{% endblock %}
+{% block schedule %}
+<table>
+      <tr>
+        <th>Занятие/День недели</th>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+        <th>Пятница</th>
+        <th>Суббота</th>
+      </tr>
+        {% for day in lessons %}
+      <tr>
+        <td>{{ day.0.lesson }}</td>
+          {% for lesson in day %}
+            <td><div>{{ lesson.subject.subject.name }}</div><div>{{ lesson.subject.teacher.name }}</div><div class='{{ lesson.subject.type }}'>{{ lesson.subject.type }}</div><div>{{ lesson.room.number }}</div></td>
+          {% endfor %}
+      </tr>
+        {% endfor %}
+</table>
+{% endblock %}

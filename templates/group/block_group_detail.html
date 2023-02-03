@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+<h3>Группа</h3>
+<p>
+    {{ group.number }}
+</p>
+<p>
+    Учеников: {{ group.size }}
+</p>
+<a href="{% url 'edit_group' pk=group.id %}"><button>Редактировать группу</button></a>
+</div>
+    <div>
+
+    <table>
+      <tr>
+        <th>Предмет</th>
+        <th>Учитель</th>
+        <th>Тип занятия</th>
+        <th>Кол-во в нед.</th>
+      </tr>
+        {% for subject in subjects %}
+          <tr>
+            <td>
+                {{ subject.subject.name }}
+            </td>
+            <td>
+                {{ subject.teacher.name }}
+            </td>
+            <td>
+                {{ subject.type }}
+            </td>
+            <td>
+                {{ subject.per_week }}
+            </td>
+          </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

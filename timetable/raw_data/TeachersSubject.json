@@ -1,0 +1,77 @@
+{
+  "1": {
+    "subject": 1,
+    "teacher": 1,
+    "type": "Seminar"
+  },
+  "2": {
+    "subject": 1,
+    "teacher": 1,
+    "type": "Lecture"
+  },
+  "3": {
+    "subject": 2,
+    "teacher": 1,
+    "type": "Lecture"
+  },
+  "4": {
+    "subject": 2,
+    "teacher": 2,
+    "type": "Seminar"
+  },
+  "5": {
+    "subject": 3,
+    "teacher": 3,
+    "type": "Lecture"
+  },
+  "6": {
+    "subject": 3,
+    "teacher": 3,
+    "type": "Seminar"
+  },
+  "7": {
+    "subject": 4,
+    "teacher": 3,
+    "type": "Lecture"
+  },
+  "8": {
+    "subject": 4,
+    "teacher": 4,
+    "type": "Seminar"
+  },
+  "9": {
+    "subject": 5,
+    "teacher": 6,
+    "type": "Seminar"
+  },
+  "10": {
+    "subject": 6,
+    "teacher": 5,
+    "type": "Seminar"
+  },
+  "11": {
+    "subject": 6,
+    "teacher": 5,
+    "type": "Lecture"
+  },
+  "12": {
+    "subject": 1,
+    "teacher": 2,
+    "type": "Seminar"
+  },
+  "13": {
+    "subject": 2,
+    "teacher": 1,
+    "type": "Seminar"
+  },
+  "14": {
+    "subject": 3,
+    "teacher": 4,
+    "type": "Seminar"
+  },
+  "15": {
+    "subject": 4,
+    "teacher": 3,
+    "type": "Seminar"
+  }
+}

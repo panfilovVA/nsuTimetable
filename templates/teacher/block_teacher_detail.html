@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+<h3>Преподаватель:</h3>
+<p>
+    ФИО: {{ teacher.name }}
+</p>
+<a href="{% url 'edit_teacher' pk=teacher.id %}"><button>Редактировать преподавателя</button></a>
+</div>
+{% endblock %}
+{% block schedule %}
+<table>
+      <tr>
+        <th>Занятие/День недели</th>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+        <th>Пятница</th>
+        <th>Суббота</th>
+      </tr>
+        {% for day in lessons %}
+      <tr>
+        <td>{{ day.0.lesson }}</td>
+          {% for lesson in day %}
+            <td><div>{{ lesson.is_free }}</div><div>{{ lesson.subject.teacher.name }}</div><div class='{{ lesson.subject.type }}'>{{ lesson.subject.type }}</div><div>{{ lesson.room.number }}</div></td>
+          {% endfor %}
+      </tr>
+        {% endfor %}
+</table>
+{% endblock %}
