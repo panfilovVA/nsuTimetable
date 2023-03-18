@@ -1,14 +1,20 @@
+import time
+from threading import Thread
+
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.utils import IntegrityError
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.views.generic import ListView, UpdateView, CreateView, DetailView
 
+from .prolog.parser import parse_file
+from .prolog.prolog_interface import get_schedule
 from .models import Subject, Teacher, Room, Group, SubjectAppointedGroup, Schedule, TeacherSubject, TeacherSched
 import json
 
 from .utils.timetable_splitter import find_free_lessons
 
+cntofqu = 0
 
 def index(request):
     return render(request, 'base.html')
@@ -94,66 +100,78 @@ def load_from_json(request):
 
 
 def create_sched(request):
-    try:
-        Schedule.objects.filter(id=1)
-        Schedule.objects.all().delete()
-        t_sched = TeacherSched.objects.all()
-        for t in t_sched:
-            t.is_free = True
-            t.save()
-    except Schedule.DoesNotExist:
-        pass
-    days = 6
-    lessons_per_day = 7
-    subjects_per_groups = SubjectAppointedGroup.objects.order_by("?").all()
-
-    for subject in subjects_per_groups:
-        try:
-            if subject.type == "Lecture":
-                sched = Schedule.objects.filter(subject__subject__name=subject.subject.name, subject__type=subject.type, group=subject.group).get()
-            else:
-                sched = Schedule.objects.filter(subject=subject).get()
-        except Schedule.DoesNotExist:
-            sched = None
-        if sched is None:
-            try:
-                for teacher in TeacherSubject.objects.filter(subject=subject.subject, type=subject.type).order_by("?"):
-                    for room in Room.objects.filter(appointment=subject.type, capacity__gte=subject.group.size).order_by("?"):
-                        for day in range(1, days + 1):
-                            for lesson in range(1, lessons_per_day + 1):
-                                all_groups_free = True
-                                if subject.type == "Lecture":
-                                    groups = subject.get_lection_groups()
-                                else:
-                                    groups = [subject.group]
-                                for group in groups:
-                                    if not group.is_free(day, lesson):
-                                        all_groups_free = False
-                                        break
-
-                                if all_groups_free and room.is_free(day, lesson) and teacher.teacher.is_free(day,
-                                                                                                             lesson):
-                                    for group in groups:
-                                        sched = Schedule()
-                                        sched.group = group
-                                        sched.subject = SubjectAppointedGroup.objects.filter(subject=subject.subject, type=subject.type, group=group).get()
-                                        sched.week_day = day
-                                        sched.lesson = lesson
-                                        sched.teacher = teacher.teacher
-                                        sched.room = room
-                                        sched.save()
-
-                                    t_sched = TeacherSched.objects.filter(teacher=teacher.teacher, lesson=lesson,
-                                                                          week_day=day).get()
-                                    t_sched.is_free = False
-                                    t_sched.save()
-
-                                    raise ZeroDivisionError
-
-                print(f"Не смог найти подходящие условия для ведения {subject.subject.name}")
-                break
-            except ZeroDivisionError:
-                continue  # if saved to db take next subject and try to save it
+    TeacherSubject.write_to_prolog()
+    Group.write_to_prolog()
+    Room.write_to_prolog()
+    SubjectAppointedGroup.write_to_prolog()
+    thread = Thread(target=get_schedule)
+    thread.start()
+    time.sleep(20)
+    thread = Thread(target=Schedule.parse_lessons, args=(parse_file(len(SubjectAppointedGroup.objects.all())),))
+    thread.start()
+    time.sleep(5)
+    return HttpResponse("Done")
+    # try:
+    #     Schedule.objects.filter(id=1)
+    #     Schedule.objects.all().delete()
+    #     t_sched = TeacherSched.objects.all()
+    #     for t in t_sched:
+    #         t.is_free = True
+    #         t.save()
+    # except Schedule.DoesNotExist:
+    #     pass
+    # days = 6
+    # lessons_per_day = 7
+    # subjects_per_groups = SubjectAppointedGroup.objects.order_by("?").all()
+    #
+    # for subject in subjects_per_groups:
+    #     try:
+    #         if subject.type == "Lecture":
+    #             sched = Schedule.objects.filter(subject__subject__name=subject.subject.name, subject__type=subject.type, group=subject.group).get()
+    #         else:
+    #             sched = Schedule.objects.filter(subject=subject).get()
+    #     except Schedule.DoesNotExist:
+    #         sched = None
+    #     if sched is None:
+    #         try:
+    #             for teacher in TeacherSubject.objects.filter(subject=subject.subject, type=subject.type).order_by("?"):
+    #                 for room in Room.objects.filter(appointment=subject.type, capacity__gte=subject.group.size).order_by("?"):
+    #                     for day in range(1, days + 1):
+    #                         for lesson in range(1, lessons_per_day + 1):
+    #                             all_groups_free = True
+    #                             if subject.type == "Lecture":
+    #                                 groups = subject.get_lection_groups()
+    #                             else:
+    #                                 groups = [subject.group]
+    #                             for group in groups:
+    #                                 if not group.is_free(day, lesson):
+    #                                     all_groups_free = False
+    #                                     break
+    #
+    #                             if all_groups_free and room.is_free(day, lesson) and teacher.teacher.is_free(day,
+    #                                                                                                          lesson):
+    #                                 for group in groups:
+    #                                     sched = Schedule()
+    #                                     sched.group = group
+    #                                     sched.subject = SubjectAppointedGroup.objects.filter(subject=subject.subject, type=subject.type, group=group).get()
+    #                                     sched.week_day = day
+    #                                     sched.lesson = lesson
+    #                                     sched.teacher = teacher.teacher
+    #                                     sched.room = room
+    #                                     sched.save()
+    #
+    #                                 t_sched = TeacherSched.objects.filter(teacher=teacher.teacher, lesson=lesson,
+    #                                                                       week_day=day).get()
+    #                                 t_sched.is_free = False
+    #                                 t_sched.save()
+    #
+    #                                 raise ZeroDivisionError
+    #
+    #             print(f"Не смог найти подходящие условия для ведения {subject.subject.name}")
+    #             break
+    #         except ZeroDivisionError:
+    #             continue  # if saved to db take next subject and try to save it
+    # return redirect(schedule)
 
 
 def create_schedule(request):
@@ -205,12 +223,12 @@ def create_schedule(request):
     return HttpResponse(f"{True}")
 
 
-def show_schedule(request, group_number):
-    res = []
+def show_schedule(request, group_number, identif):
+    res = [[{"week_day": x, "lesson:": y, "les": []} for x in range(1, 7)] for y in range(1, 8)]
     group = Group.objects.filter(number=group_number).first()
-    schedule = Schedule.objects.filter(group=group)
-    for lesson in range(1, 8):
-        res.append({"less": [less for less in schedule.filter(lesson=lesson).order_by("week_day")], "num": lesson})
+    schedule = Schedule.objects.filter(group=group, identif=identif)
+    for lesson in schedule:
+        res[lesson.lesson-1][lesson.week_day-1]["les"] = lesson
     return render(request, "schedule_block.html",
                   {"lessons": res, "groups": Group.objects.all(), "group_selected": group_number})
 
@@ -402,5 +420,7 @@ class SubjAppGroupCreate(CreateView):
 
 
 def schedule(request):
+    computed = Schedule.objects.aggregate(Max("identif"))
+    all_variants = len(parse_file(len(SubjectAppointedGroup.objects.all())))
     groups = Group.objects.all()
-    return render(request, "schedule_choose_block.html", {"groups": groups})
+    return render(request, "schedule_choose_block.html", {"groups": groups, "computed": computed["identif__max"], "all": all_variants})

@@ -11,13 +11,17 @@
         <th>Пятница</th>
         <th>Суббота</th>
       </tr>
-        {% for lesson in lessons %}
-      <tr>
-        <td>{{ lesson.num }}</td>
-          {% for day in lesson.less %}
-            <td><div>{{ day.subject.subject.name }}</div><div>{{ day.subject.teacher.name }}</div><div class='{{ day.subject.type }}'>{{ day.subject.type }}</div><div>{{ day.room.number }}</div></td>
-          {% endfor %}
-      </tr>
+
+        {% for lessonss in lessons %}
+              <tr>
+                  <td>...</td>
+
+               {% for day in lessonss %}
+                    <td><div>{{ day.les.subject }}</div><div>{{ day.les.subject.teacher.name }}</div><div class='{{ day.les.subject.type }}'>{{ day.les.subject.type }}</div><div>{{ day.les.room.number }}</div></td>
+               {% endfor %}
+              </tr>
+
         {% endfor %}
     </table>
+
 {% endblock %}

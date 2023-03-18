@@ -21,6 +21,19 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse('room', kwargs={"pk": self.pk})
 
+    def to_prolog(self):
+        return f"room({self.number}, {self.capacity}, '{self.appointment}')"
+
+    @staticmethod
+    def write_to_prolog():
+        rooms = Room.objects.all()
+        filename = "timetable/prolog/rooms.pl"
+        f = open(filename, "w+")
+        for room in rooms:
+            line = room.to_prolog() + ".\n"
+            f.write(line)
+        f.close()
+
 
 class Teacher(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name="ФИО")
@@ -38,6 +51,10 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
+    def to_prolog(self):
+        return f"teacher({self.id}, '{self.name}')"
+
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name='Название')
@@ -47,6 +64,9 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_prolog(self):
+        return f"subject({self.id}, '{self.name}')"
 
 
 class Group(models.Model):
@@ -67,6 +87,18 @@ class Group(models.Model):
     def __str__(self):
         return self.number
 
+    def to_prolog(self):
+        return f"group({self.number}, {self.size})"
+
+    @staticmethod
+    def write_to_prolog():
+        groups = Group.objects.all()
+        filename = "timetable/prolog/groups.pl"
+        f = open(filename, "w+")
+        for group in groups:
+            line = group.to_prolog() + ".\n"
+            f.write(line)
+        f.close()
 
 class SubjectAppointedGroup(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.RESTRICT)
@@ -91,8 +123,22 @@ class SubjectAppointedGroup(models.Model):
     def get_absolute_url(self):
         return reverse('subjappgroup', kwargs={"pk": self.pk})
 
+    def to_prolog(self):
+        return f"group_subject({self.id}, {self.subject.to_prolog()}, {self.group.to_prolog()}, '{self.type}')"
+
+    @staticmethod
+    def write_to_prolog():
+        filename = "timetable/prolog/group_subject.pl"
+        f = open(filename, "w+")
+        subjects = SubjectAppointedGroup.objects.all()
+        for subject in subjects:
+            line = subject.to_prolog()+".\n"
+            f.write(line)
+        f.close()
+
 
 class Schedule(models.Model):
+    identif = models.IntegerField()
     subject = models.ForeignKey(SubjectAppointedGroup, on_delete=models.RESTRICT, null=True, blank=True)
     group = models.ForeignKey(Group, on_delete=models.RESTRICT)
     lesson = models.IntegerField()
@@ -101,7 +147,7 @@ class Schedule(models.Model):
     room = models.ForeignKey(Room, on_delete=models.RESTRICT, null=True, blank=True)
 
     class Meta:
-        unique_together = ('subject', 'group', 'lesson', 'week_day')
+        unique_together = ('subject', 'group', 'lesson', 'week_day', 'identif')
 
     def to_psresence(self):
         if self.subject:
@@ -123,6 +169,33 @@ class Schedule(models.Model):
                     if len(lessons_per_groups) == len(groups):
                         res.append(lessons_per_groups)
         return res
+
+    @staticmethod
+    def parse_lessons(schedules: [[(str, str, str, str, str, str, str, str, str, str, str, str)]]):
+        cnt = 1
+        for schedule in schedules:
+            for lesson in schedule:
+                sched = Schedule()
+                group = Group.objects.filter(number=lesson[8]).get()
+                weekday = lesson[10]
+                lesson_cnt = lesson[11]
+                room = Room.objects.filter(number=lesson[5]).get()
+                teacher = Teacher.objects.filter(id=lesson[3]).get()
+                subject = SubjectAppointedGroup.objects.filter(type=lesson[2], group=group, subject__id=lesson[0]).get()
+
+                sched.lesson = lesson_cnt
+                sched.group = group
+                sched.week_day = weekday
+                sched.room = room
+                sched.teacher = teacher
+                sched.subject = subject
+                sched.identif = cnt
+                sched.save()
+            sched = Schedule.objects.filter(identif=cnt)
+            cnt += 1
+        return cnt
+
+
 
 
 # @receiver(post_save, sender=Group)
@@ -146,6 +219,19 @@ class TeacherSubject(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.RESTRICT)
     type = models.CharField(max_length=15,
                             choices=[("Seminars", "Семинар"), ("Lectures", "Лекция")])
+
+    def to_prolog(self):
+        return f"teacher_subject({self.subject.to_prolog()}, {self.teacher.to_prolog()}, '{self.type}')"
+
+    @staticmethod
+    def write_to_prolog():
+        subjects = TeacherSubject.objects.all()
+        filename = "timetable/prolog/teacher_subject.pl"
+        f = open(filename, "w+")
+        for subject in subjects:
+            line = subject.to_prolog() + ".\n"
+            f.write(line)
+        f.close()
 
 
 class TeacherSched(models.Model):

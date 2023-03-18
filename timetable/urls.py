@@ -6,9 +6,9 @@ urlpatterns = [
     path('', index),
     path('read_json/', load_from_json),
     path('create_shedule/', create_sched),
-    path('schedule/', schedule, name='schedule'),
 
-    path('schedule/<int:group_number>', show_schedule),
+    path('schedule/', schedule, name='schedule'),
+    path('schedule/<int:group_number>/<int:identif>/', show_schedule),
 
     path("subjects/", SubjectList.as_view(), name='subjects'),
     path('subject/create/', SubjectCreate.as_view(), name='create_subject'),

@@ -8,7 +8,11 @@
                 <a class="group-choose" href="/schedule/{{ group.id }}"><button>{{ group.id }}</button></a>
             {% endif %}
         {% endfor %}
+        <a href="/create_shedule/"><button>Сгенерировать</button></a>
+        <div>Всего вариантов расписания {{ all }}</div>
+        <div>Обработано вариантов расписания {{ computed }}</div>
     {% endblock %}
+
 </div>
 <div>
    {% block schedule %}
